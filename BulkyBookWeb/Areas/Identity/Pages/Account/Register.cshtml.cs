@@ -130,19 +130,20 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            if (!_roleManager.RoleExistsAsync(SD.Role_Admin).GetAwaiter().GetResult()) { 
-            _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
-            _roleManager.CreateAsync(new IdentityRole(SD.Role_Employee)).GetAwaiter().GetResult();
-            _roleManager.CreateAsync(new IdentityRole(SD.Role_User_Indi)).GetAwaiter().GetResult();
-            _roleManager.CreateAsync(new IdentityRole(SD.Role_User_Comp)).GetAwaiter().GetResult();
+            if (!_roleManager.RoleExistsAsync(SD.Role_Admin).GetAwaiter().GetResult())
+            {
+                _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole(SD.Role_Employee)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole(SD.Role_User_Indi)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole(SD.Role_User_Comp)).GetAwaiter().GetResult();
             }
 
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             Input = new InputModel()
             {
-                RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem { Text=i,Value=i}),
-                CompanyList = _unitOfWork.Company.GetAll().Select(c => new SelectListItem { Text = c.Name, Value=c.Id.ToString()})
+                RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem { Text = i, Value = i }),
+                CompanyList = _unitOfWork.Company.GetAll().Select(c => new SelectListItem { Text = c.Name, Value = c.Id.ToString() })
             };
         }
 
@@ -159,10 +160,15 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
                 //extra info
                 user.StreetAddress = Input.StreetAddress;
                 user.City = Input.City;
-                user.State = Input.State;   
-                user.PostalCode = Input.PostalCode; 
+                user.State = Input.State;
+                user.PostalCode = Input.PostalCode;
                 user.Name = Input.Name;
                 user.PhoneNumber = Input.PhoneNumber;
+
+                if (Input.Role == SD.Role_User_Comp)
+                {
+                    user.CompanyId = Input.CompanyId;
+                }
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -170,13 +176,13 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    if(Input.Role==null)
+                    if (Input.Role == null)
                     {
-                        await _userManager.AddToRoleAsync(user,SD.Role_User_Indi);
+                        await _userManager.AddToRoleAsync(user, SD.Role_User_Indi);
                     }
                     else
                     {
-                        await _userManager.AddToRoleAsync(user,Input.Role);
+                        await _userManager.AddToRoleAsync(user, Input.Role);
                     }
 
                     var userId = await _userManager.GetUserIdAsync(user);
