@@ -34,10 +34,8 @@
                         </li>*@
 @*                        <li class="nav-item">
                             <a class="nav-link" href="#">Pricing</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">About</a>
                         </li>*@
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Content Management</a>
                             <div class="dropdown-menu">
@@ -51,6 +49,9 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">Separated link</a>*@
                             </div>
+                        </li>
+                          <li class="nav-item">
+                            <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index"><i class="bi bi-cart"></i></a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
