@@ -24,7 +24,7 @@ namespace BulkyBook.Models
 
         public DateTime ShippingDate { get; set; }
 
-        public double Ordertotal { get; set; }
+        public double OrderTotal { get; set; }
         public string? OrderStatus { get; set; }
         public string? PaymentStatus { get; set; }
         public string? TrackingNumber { get; set; }
