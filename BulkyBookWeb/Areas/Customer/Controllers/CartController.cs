@@ -138,6 +138,9 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             var service = new SessionService();
             Session session = service.Create(options);
 
+            _unitOfWork.OrderHeaders.UpdateStripePaymentId(ShoppingCartVM.OrderHeader.Id, session.Id, session.PaymentIntentId);
+            _unitOfWork.Save();
+
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
 
@@ -149,6 +152,28 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             //_unitOfWork.Save();
 
             //return RedirectToAction("Index", "Home");
+        }
+
+
+        public IActionResult OrderConfirmation(int id)
+        {
+            OrderHeader orderHeader = _unitOfWork.OrderHeaders.GetFirstOrDefault(x => x.Id == id);
+
+            var service = new SessionService();
+            Session session = service.Get(orderHeader.SessionId);
+            //check Stripe status
+            if(session.PaymentStatus.ToLower()=="paid")
+            {
+                _unitOfWork.OrderHeaders.UpdateStatus(id,SD.StatusApproved, SD.PaymentStatusApproved);
+                _unitOfWork.Save();
+            }
+
+            List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart.GetAll(u=>u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
+            //dupa ce a creat lista comandata, strerge comanda din ShoppingCart
+            _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
+            _unitOfWork.Save();
+
+            return View(id);
         }
 
         public IActionResult Plus(int cartId)
