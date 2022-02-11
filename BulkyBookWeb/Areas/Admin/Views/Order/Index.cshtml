@@ -6,7 +6,20 @@
             <h2 class="text-primary">Orders List</h2>
         </div>
         <div class="p-2">
-            LIST !!!!!
+            <ul class="list-group list-group-horizontal-sm">
+                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="inprocess">
+                <li class="list-group-item">In Process</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="pending">
+                <li class="list-group-item">Payment Pending</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="completed">
+                <li class="list-group-item">Completed</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="all">
+                <li class="list-group-item">All</li>
+                </a>
+            </ul>
         </div>
     </div>
 
@@ -28,5 +41,5 @@
 </div>
 @section Scripts
 {
-    <script src="~/js/order.js"></script>
+<script src="~/js/order.js"></script>
 }
