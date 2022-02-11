@@ -90,16 +90,16 @@
 									<li class="list-group-item d-flex justify-content-between">
 									<div>
 										<h6 class="my-0">Title: @cart.Product.Title</h6>
-										<small class="text-muted">Quantity: @cart.Count</small>
+										<small class="text-muted">Quantity: @cart.Count x @cart.Price.ToString("c")</small>
 									</div>
-									<span class="text-muted">@((cart.Price * cart.Count).ToString("0.00")) Lei</span>
+									<span class="text-muted  pt-2">@((cart.Price * cart.Count).ToString("c"))</span>
 								</li>
 								}
 
 
 								<li class="list-group-item d-flex justify-content-between bg-light">
-									<small class="text-info">Total (RON)</small>
-									<strong class="text-info">@Model.OrderHeader.OrderTotal.ToString("0.00") Lei</strong>
+									<small class="text-info">Total (USD)</small>
+									<strong class="text-info">@Model.OrderHeader.OrderTotal.ToString("c")</strong>
 								</li>
 							</ul>
 						</div>
