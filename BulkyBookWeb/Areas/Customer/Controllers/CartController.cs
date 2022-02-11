@@ -165,12 +165,6 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             {
                 return RedirectToAction("OrderConfirmation", "Cart", new { id= ShoppingCartVM.OrderHeader.Id});
             }
-
-            //dupa ce a creat lista comandata, strerge comanda din ShoppingCart
-            //_unitOfWork.ShoppingCart.RemoveRange(ShoppingCartVM.ListCart);
-            //_unitOfWork.Save();
-
-            //return RedirectToAction("Index", "Home");
         }
 
 
