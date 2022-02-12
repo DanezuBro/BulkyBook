@@ -3,6 +3,13 @@
      <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script type="text/javascript">
+        toastr.options=
+                                {
+                                    "newestOnTop": true,
+                                    "closeButton": true,
+                                    "positionClass": "toast-bottom-right",
+                                    "progressBar": true
+                               }
         toastr.success('@TempData["success"]');
     </script>
 
@@ -12,6 +19,13 @@
          <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script type="text/javascript">
+        toastr.options=
+                                {
+                                    "newestOnTop": true,
+                                    "closeButton": true,
+                                    "positionClass": "toast-bottom-right",
+                                    "progressBar": true
+                               }
         toastr.success('@TempData["error"]');
     </script>
 }
