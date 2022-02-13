@@ -91,6 +91,10 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
             orderHeader.Carrier = OrderVM.OrderHeader.Carrier;
             orderHeader.OrderStatus = SD.StatusShipped;
             orderHeader.ShippingDate = DateTime.Now;
+            if (orderHeader.PaymentStatus == SD.PaymentStatusDelayedPayment)
+            {
+                orderHeader.PaymentDueDate = DateTime.Now.AddDays(30);
+            }
 
             _unitOfWork.OrderHeaders.Update(orderHeader);
             _unitOfWork.Save();
@@ -118,7 +122,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
 
                 var service = new RefundService();
                 Refund refund = service.Create(options);
-            _unitOfWork.OrderHeaders.UpdateStatus(orderHeader.Id, SD.StatusCancelled, SD.StatuRefunded);
+            _unitOfWork.OrderHeaders.UpdateStatus(orderHeader.Id, SD.StatusCancelled, SD.StatusRefunded);
             }
             else
             {

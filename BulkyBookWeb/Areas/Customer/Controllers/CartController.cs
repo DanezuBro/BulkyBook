@@ -129,7 +129,7 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
                 {
                     LineItems = new List<SessionLineItemOptions> { },
                     Mode = "payment",
-                    SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",
+                    SuccessUrl = domain + $"customer/cart/OrderConfirmation?orderId={ShoppingCartVM.OrderHeader.Id}",
                     CancelUrl = domain + $"customer/cart/index",
                 };
                 foreach (var item in ShoppingCartVM.ListCart)
@@ -163,14 +163,14 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             }
             else
             {
-                return RedirectToAction("OrderConfirmation", "Cart", new { id= ShoppingCartVM.OrderHeader.Id});
+                return RedirectToAction("OrderConfirmation", "Cart", new { orderId= ShoppingCartVM.OrderHeader.Id});
             }
         }
 
 
-        public IActionResult OrderConfirmation(int id)
+        public IActionResult OrderConfirmation(int orderId)
         {
-            OrderHeader orderHeader = _unitOfWork.OrderHeaders.GetFirstOrDefault(x => x.Id == id);
+            OrderHeader orderHeader = _unitOfWork.OrderHeaders.GetFirstOrDefault(o => o.Id == orderId);
 
             if(orderHeader.PaymentStatus!=SD.PaymentStatusDelayedPayment)
             {
@@ -179,7 +179,7 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
                 //check Stripe status
                 if(session.PaymentStatus.ToLower()=="paid")
                 {
-                    _unitOfWork.OrderHeaders.UpdateStatus(id,SD.StatusApproved, SD.PaymentStatusApproved);
+                    _unitOfWork.OrderHeaders.UpdateStatus(orderId, SD.StatusApproved, SD.PaymentStatusApproved);
                     _unitOfWork.Save();
                 }
             }
@@ -188,7 +188,7 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             //dupa ce a creat lista comandata, strerge comanda din ShoppingCart
             _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
             _unitOfWork.Save();
-            return View(id);
+            return View(orderId);
         }
 
         public IActionResult Plus(int cartId)
