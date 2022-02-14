@@ -191,7 +191,8 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             _emailSender.SendEmailAsync(orderHeader.ApplicationUser.Email,"New order - Book Store","<p>New order created.</p>");
 
             List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart.GetAll(u=>u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
-            //dupa ce a creat lista comandata, strerge comanda din ShoppingCart
+            //dupa ce a creat lista comandata, strerge comanda din ShoppingCart si din sesiune
+            HttpContext.Session.Clear();
             _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
             _unitOfWork.Save();
             return View(orderId);
