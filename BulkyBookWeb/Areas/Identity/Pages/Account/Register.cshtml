@@ -1,13 +1,21 @@
 ﻿@page
+@using BulkyBook.Utility
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
 }
 
-<h1 class="pt-4">@ViewData["Title"]</h1>
-
 <div class="row pt-4">
-    <div class="col-md-7">
+    <div class="col-md-3">&nbsp</div>
+    <div class="col-md-6">
+        @if(User.IsInRole(SD.Role_Admin))
+                {
+            <h1 class="pt-4">Register - ADMIN PORTAL</h1>
+        }
+        else
+        {
+            <h1 class="pt-4">Register</h1>
+        }
         <form id="registerForm" class=" row" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h2>Create a new account.</h2>
             <hr />
@@ -57,7 +65,8 @@
                 <label asp-for="Input.ConfirmPassword"></label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-
+            @if(User.IsInRole(SD.Role_Admin))
+            {
             <div class=" col-6">
                 @*<label asp-for="Input.Role"></label>*@
                 <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
@@ -70,11 +79,14 @@
                 <select asp-for="Input.CompanyId" asp-items="@Model.Input.CompanyList" class="form-select" style="display:none;">
                 <option disabled selected>-- Select Company --</option>
                 </select>
-            </div>
+            </div>                
+            }
+
             <button id="registerSubmit" type="submit" class="w-100 btn btn-primary mt-3">Register</button>
         </form>
     </div>
-    <div class="col-md-5">
+        <div class="col-md-3">&nbsp</div>
+    @*<div class="col-md-5">
         <section>
             <h3>Use another service to register.</h3>
             <hr />
@@ -105,7 +117,7 @@
                 }
             }
         </section>
-    </div>
+    </div>*@
 </div>
 
 @section Scripts {

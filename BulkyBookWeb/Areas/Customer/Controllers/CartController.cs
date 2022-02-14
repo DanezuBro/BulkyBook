@@ -211,13 +211,14 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             if (cart.Count <= 1)
             {
                 _unitOfWork.ShoppingCart.Remove(cart);
+                var count = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == cart.ApplicationUserId).ToList().Count -1;
+                HttpContext.Session.SetInt32(SD.SessionCart, count);
             }
             else
             {
                 _unitOfWork.ShoppingCart.DecrementCount(cart, 1);
             }
-
-            _unitOfWork.Save();
+                _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
 
@@ -226,6 +227,10 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             var cart = _unitOfWork.ShoppingCart.GetFirstOrDefault(c => c.Id == cartId);
             _unitOfWork.ShoppingCart.Remove(cart);
             _unitOfWork.Save();
+
+            var count = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == cart.ApplicationUserId).ToList().Count;
+            HttpContext.Session.SetInt32(SD.SessionCart, count);
+            //HttpContext.Session.SetInt32(SD.SessionCart, -1);  // merge si asa
             return RedirectToAction(nameof(Index));
         }
         private double GetPriceBasedOnQuantity(double quantity, double price, double price50, double price100)

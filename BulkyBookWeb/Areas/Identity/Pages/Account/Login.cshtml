@@ -1,15 +1,17 @@
 ﻿@page
 @model LoginModel
-
-@{
+@*@{
     ViewData["Title"] = "Log in";
-}
+}*@
 
 <h1>@ViewData["Title"]</h1>
 <div class="row">
-    <div class="col-md-4">
+        <div class="col-md-4">&nbsp</div>
+
+    <div class="col-md-4 mt-5">
         <section>
             <form id="account" method="post">
+@*            <h1 class="pt-4">LOGIN IN</h1>*@
                 <h2>Use a local account to log in.</h2>
                 <hr />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -47,8 +49,9 @@
                 </div>
             </form>
         </section>
+         <div class="col-md-4">&nbsp</div>
     </div>
-    <div class="col-md-6 col-md-offset-2">
+    @*<div class="col-md-6 col-md-offset-2">
         <section>
             <h3>Use another service to log in.</h3>
             <hr />
@@ -76,7 +79,7 @@
                     </form>
                 }
             }
-        </section>
+        </section>*@
     </div>
 </div>
 
