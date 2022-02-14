@@ -128,14 +128,14 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             if (applicationUser.CompanyId.GetValueOrDefault() == 0)
             {
                 //Stripe settings for payment
-                //var domain = "https://localhost:44398/";
-                var domain = "https://bookstoredemo.azurewebsites.net/";
+                var domain = "https://localhost:44398/";
+                //var domain = "https://bookstoredemo.azurewebsites.net/";
                 var options = new SessionCreateOptions
                 {
                     LineItems = new List<SessionLineItemOptions> { },
                     Mode = "payment",
-                    SuccessUrl = domain + $"customer/cart/OrderConfirmation?orderId={ShoppingCartVM.OrderHeader.Id}",
-                    CancelUrl = domain + $"customer/cart/index",
+                    SuccessUrl = domain + $"Customer/Cart/OrderConfirmation?orderId={ShoppingCartVM.OrderHeader.Id}",
+                    CancelUrl = domain + $"Customer/Cart/Index",
                 };
                 foreach (var item in ShoppingCartVM.ListCart)
                 {
@@ -171,7 +171,6 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
                 return RedirectToAction("OrderConfirmation", "Cart", new { orderId= ShoppingCartVM.OrderHeader.Id});
             }
         }
-
 
         public IActionResult OrderConfirmation(int orderId)
         {
