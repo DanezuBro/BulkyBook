@@ -5,6 +5,7 @@ using BulkyBook.Models;
 using BulkyBook.Models.ViewModels;
 using BulkyBook.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Stripe.Checkout;
@@ -128,13 +129,13 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             if (applicationUser.CompanyId.GetValueOrDefault() == 0)
             {
                 //Stripe settings for payment
-                var domain = "https://localhost:44398/";
-                //var domain = "https://bookstoredemo.azurewebsites.net/";
+                //var domain = "https://localhost:44398/";
+                var domain = "https://bookstoredemo.azurewebsites.net/";
                 var options = new SessionCreateOptions
                 {
                     LineItems = new List<SessionLineItemOptions> { },
                     Mode = "payment",
-                    SuccessUrl = domain + $"Customer/Cart/OrderConfirmation?orderId={ShoppingCartVM.OrderHeader.Id}",
+                    SuccessUrl = domain + $"Customer/Cart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",
                     CancelUrl = domain + $"Customer/Cart/Index",
                 };
                 foreach (var item in ShoppingCartVM.ListCart)
@@ -168,35 +169,36 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             }
             else
             {
-                return RedirectToAction("OrderConfirmation", "Cart", new { orderId= ShoppingCartVM.OrderHeader.Id});
+                return RedirectToAction("OrderConfirmation", "Cart", new { id= ShoppingCartVM.OrderHeader.Id});
             }
         }
 
-        public IActionResult OrderConfirmation(int orderId)
+        public IActionResult OrderConfirmation(int id)
         {
-            OrderHeader orderHeader = _unitOfWork.OrderHeaders.GetFirstOrDefault(o => o.Id == orderId, includeProperties:"ApplicationUser");
+            OrderHeader orderHeader = _unitOfWork.OrderHeaders.GetFirstOrDefault(o => o.Id == id, includeProperties: "ApplicationUser");
 
-            if(orderHeader.PaymentStatus!=SD.PaymentStatusDelayedPayment)
+            if (orderHeader.PaymentStatus != SD.PaymentStatusDelayedPayment)
             {
                 var service = new SessionService();
                 Session session = service.Get(orderHeader.SessionId);
                 //check Stripe status
-                if(session.PaymentStatus.ToLower()=="paid")
+                if (session.PaymentStatus.ToLower() == "paid")
                 {
-                    _unitOfWork.OrderHeaders.UpdateStatus(orderId, SD.StatusApproved, SD.PaymentStatusApproved);
+                    _unitOfWork.OrderHeaders.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
                     _unitOfWork.Save();
                 }
             }
             // send email after order confirmation
-            _emailSender.SendEmailAsync(orderHeader.ApplicationUser.Email,"New order - Book Store","<p>New order created.</p>");
+            _emailSender.SendEmailAsync(orderHeader.ApplicationUser.Email, "New order - Book Store", "<p>New order created.</p>");
 
-            List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart.GetAll(u=>u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
+            List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
             //dupa ce a creat lista comandata, strerge comanda din ShoppingCart si din sesiune
             HttpContext.Session.Clear();
             _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
             _unitOfWork.Save();
-            return View(orderId);
+            return View(id);
         }
+
 
         public IActionResult Plus(int cartId)
         {

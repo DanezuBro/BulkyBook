@@ -174,21 +174,21 @@ namespace BulkyBookWeb.Controllers
             return Json(new { data = companyList});
         }
 
-        [HttpDelete]
-        public IActionResult Delete (int? id)
-        {
-            var obj = _unitOfWork.Company.GetFirstOrDefault(c=>c.Id==id);
-            if(obj==null)
-            {
-                return Json(new { success = false, message = "Error while deleting."});
-            }
-            else
-            {
-                _unitOfWork.Company.Remove(obj);
-                _unitOfWork.Save();
-                return Json(new { success = true, message = "Delete successful." });
-            }
-        }
+        //[HttpDelete]
+        //public IActionResult Delete (int? id)
+        //{
+        //    var obj = _unitOfWork.Company.GetFirstOrDefault(c=>c.Id==id);
+        //    if(obj==null)
+        //    {
+        //        return Json(new { success = false, message = "Error while deleting."});
+        //    }
+        //    else
+        //    {
+        //        _unitOfWork.Company.Remove(obj);
+        //        _unitOfWork.Save();
+        //        return Json(new { success = true, message = "Delete successful." });
+        //    }
+        //}
 
 
         #endregion

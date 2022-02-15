@@ -56,14 +56,14 @@ namespace BulkyBookWeb.Controllers
 
         public IActionResult Upsert(int? id)
         {
-            ProductVM productVM = new ()
-            { 
+            ProductVM productVM = new()
+            {
                 Product = new Product(),
                 CategoryList = _unitOfWork.Category.GetAll().Select(c => new SelectListItem { Text = c.Name, Value = c.Id.ToString() }),
-                CoverTypeList = _unitOfWork.CoverType.GetAll().Select(c=> new SelectListItem { Text = c.Name, Value=c.Id.ToString()})
+                CoverTypeList = _unitOfWork.CoverType.GetAll().Select(c => new SelectListItem { Text = c.Name, Value = c.Id.ToString() })
             };
 
-            if(id == null || id==0)
+            if (id == null || id == 0)
             {
                 //create product
                 //ViewBag.CategoryList = CategoryList;
@@ -73,14 +73,15 @@ namespace BulkyBookWeb.Controllers
             else
             {
                 //update product
-                productVM.Product = _unitOfWork.Product.GetFirstOrDefault(p=>p.Id==id);
+                productVM.Product = _unitOfWork.Product.GetFirstOrDefault(p => p.Id == id);
                 return View(productVM);
             }
-                
+
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = SD.Role_Employee)]
         public IActionResult Upsert(ProductVM obj, IFormFile? file)
         {
             if (ModelState.IsValid)
@@ -137,6 +138,7 @@ namespace BulkyBookWeb.Controllers
 
         //POST
         [HttpDelete]
+        [Authorize(Roles = SD.Role_Employee)]
         public IActionResult Delete(int? id)
         {
             var obj = _unitOfWork.Product.GetFirstOrDefault(u => u.Id == id);

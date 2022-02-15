@@ -16,7 +16,65 @@
     <link rel="stylesheet" href="//cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css" />
 
 </head>
-<body class="d-flex flex-column min-vh-100">
+<body>
+    <!-- Button trigger modal -->
+    <div id="instructions" style="padding-top:0px;">
+        <button type="button"  class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          <i class="bi bi-info-circle"></i>
+        </button>
+    </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog"   style="max-height:80%;min-width:50%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">BOOK STORE - DEMO</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+                     <h4><span style="color: #008080;">Website Overview:</span></h4>
+                    <ul>
+                        <li>
+                            Following are the User Account that exists by default <i style="color:dodgerblue">(Password: Admin123*)</i>:
+                    <ul>
+                        <li>Admin User&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<i style="color:dodgerblue">admin@bookstore.com</i></li>
+
+                    </ul>
+                        </li>
+                        <li>You can create new accounts as you wish! If you prefer to create any accounts please login using the Admin/Manager User and navigate to Users inside Content Management.&nbsp;</li>
+                        <li>Create/Edit/Delete functionalities have been disabled for all users inside Content Management (Admin) portal to avoid misuse of website.</li>
+                       @* <li>If any Manager account locks any other user using Content Management portal, they will be able to lock them for only 1 min and system will unlock them after 2min.</li>*@
+                        <li>Orders older than 30 days might be deleted.</li>
+                    </ul>
+                    <h4 style="color: #2e6c80;">How to use the demo website:</h4>
+                    <ul>
+                        <li>This website is inteded to server as demo application.</li>
+                        <li>User can place order after adding items to cart.</li>
+                        <li>Once order is placed you can login as Manager/Admin User and Manage orders and see the flow of application.</li>
+                        <li>
+                            In order to place order you can use any test credit card number supported by stripe.
+                            <ul>
+                                <li>
+                                    A default example is 4242 4242 4242 4242, valid date , any 3 digit CVV.
+                                </li>
+                            </ul>
+                        </li>
+                        <li>Admin user can register new employees/admins for the website.</li>
+                    </ul>
+      </div>
+@*      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>*@
+    </div>
+  </div>
+</div>
+
+@*    <div id="instructions" style="padding-top:0px;">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bi bi-info-circle"></i></button>
+    </div>*@
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">
@@ -82,7 +140,7 @@
         </main>
     </div>
 
-    <footer class=" bg-primary footer text-muted mt-auto">
+    <footer class=" bg-primary footer text-muted">
         <div class="container-fluid text-center">
             @DateTime.Now.Year - Book Store - made by Daniel Scortaru using ASP.NET Core MVC (.NET 6), Entity Framework Core, ASP.NET Core Identity and STRIPE Payment
         </div>

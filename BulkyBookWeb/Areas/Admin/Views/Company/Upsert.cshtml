@@ -49,11 +49,11 @@
                 <div class="col-12">
                     @if (Model.Id != 0)
                     {
-                        <button type="submit" class="btn btn-primary" style="width:150px;">Update</button>
+                        <button type="submit" class="btn btn-primary" style="width:150px;" disabled>Update</button>
                     }
                     else
                     {
-                        <button type="submit" class="btn btn-outline-primary" style="width:150px;">Create</button>
+                        <button type="submit" class="btn btn-outline-primary" style="width:150px;" disabled>Create</button>
                     }
                     <a asp-controller="Company" asp-action="Index" class="btn btn-outline-secondary" style="width:200px;">Back to List</a>
                 </div>
